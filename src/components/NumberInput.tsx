@@ -13,6 +13,7 @@ function NumberInputComponent({numElements,setNumElements}:NumberInputComponentP
 	return (
 		<NumberInput
 			defaultValue={numElements.toString()}
+			value={numElements}
 			min={10}
 			max={20}
 			padding={"0.5em"}

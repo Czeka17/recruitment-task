@@ -16,7 +16,7 @@ html {
 }
 .App h1 {
 	font-size: 2rem;
-	margin: 1em;
+	padding: 1em;
 	text-transform: uppercase;
 	font-weight: bold;
 }

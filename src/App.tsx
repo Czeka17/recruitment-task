@@ -5,18 +5,61 @@ import List from "./components/list";
 import Pagination from "./components/pagination";
 import Filters from "./components/Filters";
 import Footer from "./components/Footer";
-import { ChakraProvider, Text } from "@chakra-ui/react";
-import { Spinner } from "@chakra-ui/react";
-function App() {
+import { ChakraProvider, Text, Spinner } from "@chakra-ui/react";
+interface AppProps{
+	isLoading?:boolean;
+	error?:boolean;
+	sortBy?:string;
+	sortOrder?:string;
+	numElements?:number
+}
+function App({ isLoading: propIsLoading, error: propError, sortBy: propSortBy, sortOrder:propSortOrder, numElements:propNumElements }:AppProps) {
 	const [currentPage, setCurrentPage] = useState(1);
-	const [sortBy, setSortBy] = useState("name");
-	const [sortOrder, setSortOrder] = useState("ascending");
-	const [numElements, setNumElements] = useState(15);
+	const [sortBy, setSortBy] = useState(propSortBy || "name");
+	const [sortOrder, setSortOrder] = useState(propSortOrder || "ascending");
+	const [numElements, setNumElements] = useState(propNumElements || 15);
 	const [totalPages, setTotalPages] = useState(0);
 	const [tags, setTags] = useState<any[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(false);
+	const [isLoading, setIsLoading] = useState(propIsLoading || false);
+	const [error, setError] = useState(propError || false);
 
+	useEffect(() => {
+		if (propIsLoading !== undefined) {
+		  setIsLoading(propIsLoading);
+		}else{
+			setIsLoading(true)
+		}
+		
+	  }, [propIsLoading]);
+	
+	  useEffect(() => {
+		if (propError !== undefined) {
+		  setError(propError);
+		}
+	  }, [propError]);
+	  useEffect(() => {
+		if (propSortBy !== undefined) {
+		  setSortBy(propSortBy)
+		}
+	  }, [propSortBy]);
+	  useEffect(() => {
+		if (propSortOrder !== undefined) {
+		  setSortOrder(propSortOrder)
+		}
+	  }, [propSortOrder]);
+	  useEffect(() => {
+		if (propNumElements !== undefined) {
+			if(propNumElements < 10){
+				setNumElements(10)
+			}
+			else if(propNumElements > 20){
+				setNumElements(20)
+			}
+			else{
+		  setNumElements(propNumElements)
+			}
+		}
+	  }, [propNumElements]);
 	const fetchTags = async () => {
 		const apiKey = 'uwuw1WkZ*BMcvSUq3mB3vA(('
 		const response = await fetch(
